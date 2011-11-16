@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+     | POM Relationships
+     -->
+
+    <parent>
+        <groupId>net.codjo.pom</groupId>
+        <artifactId>codjo-pom-library</artifactId>
+        <version>SNAPSHOT</version>
+    </parent>
+    <groupId>net.codjo.shipment</groupId>
+    <artifactId>codjo-shipment</artifactId>
+    <version>3.3-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>net.codjo.imports</groupId>
+            <artifactId>codjo-imports-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.codjo.fake-db</groupId>
+            <artifactId>codjo-fake-db</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!--
+    | Project Information
+    -->
+
+    <name>Lib &gt; Shipment</name>
+    <description>Librairie permettant de transferer en typant des donnees d'une table a une autre
+    </description>
+    <inceptionYear>2003</inceptionYear>
+
+    <!--
+    | Environment Information
+    -->
+
+    <scm>
+        <connection>scm:git:https://github.com/codjo/codjo-shipment.git</connection>
+        <developerConnection>scm:git:https://github.com/codjo/codjo-shipment.git</developerConnection>
+        <url>https://github.com/codjo/codjo-shipment</url>
+    </scm>
+
+</project>

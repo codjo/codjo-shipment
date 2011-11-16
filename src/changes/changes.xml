@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+    <properties>
+        <title>Changes</title>
+    </properties>
+    <body>
+        <release version="2.00" date="2004-07-23" description="Correction">
+            <action dev="rivierv" type="update">
+               Passage à codjo-import-2.00.
+            </action>
+        </release>
+        <release version="1.02" date="2004-06-04" description="Correction">
+            <action dev="gonnot" type="fix">
+               Correction mineure.
+            </action>
+        </release>
+        <release version="1.01" date="2003-09-05" description="Version initiale">
+            <action dev="gonnot" type="fix">
+               Stabilisation des SNAPSHOT.
+            </action>
+        </release>
+    </body>
+</document>
