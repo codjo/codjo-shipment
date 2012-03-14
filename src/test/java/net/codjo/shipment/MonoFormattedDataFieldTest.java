@@ -4,6 +4,7 @@
  * Common Apache License 2.0
  */
 package net.codjo.shipment;
+import java.sql.ResultSet;
 import net.codjo.imports.common.translator.Translator;
 import fakedb.FakeResultSet;
 import java.sql.SQLException;
@@ -30,9 +31,9 @@ public class MonoFormattedDataFieldTest extends TestCase {
             new MonoFormattedDataField("COL_B", "COL_B", translator);
         Object[][] matrix = {
                 {"COL_A", "COL_C"},
-                {"b", new Integer(123)}
+                {"b", 123}
             };
-        FakeResultSet rs = new FakeResultSet(matrix);
+        ResultSet rs = new FakeResultSet(matrix).getStub();
         rs.next();
         try {
             dataField.convertField(rs);
@@ -60,7 +61,7 @@ public class MonoFormattedDataFieldTest extends TestCase {
                 {"COL_A", "COL_B"},
                 {"BOBO", "01/10/01"}
             };
-        FakeResultSet rs = new FakeResultSet(matrix);
+        ResultSet rs = new FakeResultSet(matrix).getStub();
         rs.next();
         assertEquals(dataField.convertField(rs), java.sql.Date.valueOf("2001-10-01"));
     }
@@ -142,7 +143,7 @@ public class MonoFormattedDataFieldTest extends TestCase {
                 {"COL_A", "COL_B"},
                 {"BOBO", null}
             };
-        FakeResultSet rs = new FakeResultSet(matrix);
+        ResultSet rs = new FakeResultSet(matrix).getStub();
         rs.next();
         assertEquals(dataField.convertField(rs), null);
     }
