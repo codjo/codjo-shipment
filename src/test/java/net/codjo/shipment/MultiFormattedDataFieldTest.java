@@ -4,12 +4,14 @@
  * Common Apache License 2.0
  */
 package net.codjo.shipment;
-import net.codjo.imports.common.translator.Translator;
 import fakedb.FakeResultSet;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
+import java.util.Map;
 import junit.framework.TestCase;
+import net.codjo.imports.common.translator.Translator;
 /**
  * Tests de la classe {@link MonoFormattedDataField}.
  *
@@ -20,30 +22,30 @@ public class MultiFormattedDataFieldTest extends TestCase {
     /**
      * A unit test for JUnit
      *
-     * @exception Exception Description of the Exception
+     * @throws Exception Description of the Exception
      */
     public void test_convertField() throws Exception {
         Translator datafieldSlash =
-            DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
+              DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
         Translator datafieldHyphen =
-            DataShipmentHome.getNewTranslator(Types.DATE, null, "dd-MM-yy");
+              DataShipmentHome.getNewTranslator(Types.DATE, null, "dd-MM-yy");
 
-        HashMap sourceTranslator = new HashMap();
+        HashMap<String, Translator> sourceTranslator = new HashMap<String, Translator>();
         sourceTranslator.put("GPI", datafieldSlash);
         sourceTranslator.put("FININF", datafieldHyphen);
 
         MultiFormattedDataField multi =
-            new MultiFormattedDataField("COL_A", "COL_A", "COL_SOURCE_SYSTEM",
-                sourceTranslator);
+              new MultiFormattedDataField("COL_A", "COL_A", "COL_SOURCE_SYSTEM",
+                                          sourceTranslator);
 
         Object[][] matrix =
-            {
-                {"COL_A", "COL_B", "COL_SOURCE_SYSTEM"},
-                {"10-10-66", null, "FININF"},
-                {"11/11/66", null, "GPI"}
-            };
+              {
+                    {"COL_A", "COL_B", "COL_SOURCE_SYSTEM"},
+                    {"10-10-66", null, "FININF"},
+                    {"11/11/66", null, "GPI"}
+              };
 
-        FakeResultSet rs = new FakeResultSet(matrix);
+        ResultSet rs = new FakeResultSet(matrix).getStub();
         rs.next();
         assertEquals("FINIF", multi.convertField(rs), java.sql.Date.valueOf("1966-10-10"));
         rs.next();
@@ -51,29 +53,23 @@ public class MultiFormattedDataFieldTest extends TestCase {
     }
 
 
-    /**
-     * A unit test for JUnit
-     *
-     * @exception Exception Description of the Exception
-     */
-    public void test_convertField_fieldNotFound()
-            throws Exception {
+    public void test_convertField_fieldNotFound() throws Exception {
         Translator datafieldSlash =
-            DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
-        HashMap sourceTranslator = new HashMap();
+              DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
+        Map<String, Translator> sourceTranslator = new HashMap<String, Translator>();
         sourceTranslator.put("GPI", datafieldSlash);
 
         MultiFormattedDataField multi =
-            new MultiFormattedDataField("COL_Z", "COL_A", "COL_SOURCE_SYSTEM",
-                sourceTranslator);
+              new MultiFormattedDataField("COL_Z", "COL_A", "COL_SOURCE_SYSTEM",
+                                          sourceTranslator);
 
         Object[][] matrix =
-            {
-                {"COL_A", "COL_B", "COL_SOURCE_SYSTEM"},
-                {null, null, "GPI"}
-            };
+              {
+                    {"COL_A", "COL_B", "COL_SOURCE_SYSTEM"},
+                    {null, null, "GPI"}
+              };
 
-        FakeResultSet rs = new FakeResultSet(matrix);
+        ResultSet rs = new FakeResultSet(matrix).getStub();
         rs.next();
         try {
             multi.convertField(rs);
@@ -85,61 +81,39 @@ public class MultiFormattedDataFieldTest extends TestCase {
     }
 
 
-    /**
-     * A unit test for JUnit
-     *
-     * @exception Exception Description of the Exception
-     */
-    public void test_convertField_getConvertedSqlType()
-            throws Exception {
-        Translator datafieldSlash =
-            DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
-        HashMap sourceTranslator = new HashMap();
+    public void test_convertField_getConvertedSqlType() throws Exception {
+        Translator datafieldSlash = DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
+        Map<String, Translator> sourceTranslator = new HashMap<String, Translator>();
         sourceTranslator.put("GPI", datafieldSlash);
 
         MultiFormattedDataField multi =
-            new MultiFormattedDataField("COL_SOURCE", "COL_DEST", "COL_SOURCE_SYSTEM",
-                sourceTranslator);
+              new MultiFormattedDataField("COL_SOURCE", "COL_DEST", "COL_SOURCE_SYSTEM",
+                                          sourceTranslator);
 
         assertEquals(multi.getConvertedSqlType(), Types.DATE);
     }
 
 
-    /**
-     * A unit test for JUnit
-     *
-     * @exception Exception Description of the Exception
-     */
-    public void test_convertField_getDestFieldName()
-            throws Exception {
-        Translator datafieldSlash =
-            DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
-        HashMap sourceTranslator = new HashMap();
+    public void test_convertField_getDestFieldName() throws Exception {
+        Translator datafieldSlash = DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
+        HashMap<String, Translator> sourceTranslator = new HashMap<String, Translator>();
         sourceTranslator.put("GPI", datafieldSlash);
 
         MultiFormattedDataField multi =
-            new MultiFormattedDataField("COL_SOURCE", "COL_DEST", "COL_SOURCE_SYSTEM",
-                sourceTranslator);
+              new MultiFormattedDataField("COL_SOURCE", "COL_DEST", "COL_SOURCE_SYSTEM", sourceTranslator);
 
         assertEquals(multi.getDBDestFieldName(), "COL_DEST");
     }
 
 
-    /**
-     * A unit test for JUnit
-     *
-     * @exception Exception Description of the Exception
-     */
-    public void test_convertField_nullArguments()
-            throws Exception {
-        Translator datafieldSlash =
-            DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
-        HashMap sourceTranslator = new HashMap();
+    public void test_convertField_nullArguments() throws Exception {
+        Translator datafieldSlash = DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
+        Map<String, Translator> sourceTranslator = new HashMap<String, Translator>();
         sourceTranslator.put("GPI", datafieldSlash);
 
         try {
             new MultiFormattedDataField(null, "COL_DEST", "COL_SOURCE_SYSTEM",
-                sourceTranslator);
+                                        sourceTranslator);
             fail("Le test doit echouer, le champ source est null");
         }
         catch (IllegalArgumentException sF) {
@@ -167,25 +141,25 @@ public class MultiFormattedDataFieldTest extends TestCase {
     /**
      * A unit test for JUnit
      *
-     * @exception Exception Description of the Exception
+     * @throws Exception Description of the Exception
      */
     public void test_convertField_nullValue() throws Exception {
         Translator datafieldSlash =
-            DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
-        HashMap sourceTranslator = new HashMap();
+              DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
+        HashMap<String, Translator> sourceTranslator = new HashMap<String, Translator>();
         sourceTranslator.put("GPI", datafieldSlash);
 
         MultiFormattedDataField multi =
-            new MultiFormattedDataField("COL_A", "COL_A", "COL_SOURCE_SYSTEM",
-                sourceTranslator);
+              new MultiFormattedDataField("COL_A", "COL_A", "COL_SOURCE_SYSTEM",
+                                          sourceTranslator);
 
         Object[][] matrix =
-            {
-                {"COL_A", "COL_B", "COL_SOURCE_SYSTEM"},
-                {null, null, "GPI"}
-            };
+              {
+                    {"COL_A", "COL_B", "COL_SOURCE_SYSTEM"},
+                    {null, null, "GPI"}
+              };
 
-        FakeResultSet rs = new FakeResultSet(matrix);
+        ResultSet rs = new FakeResultSet(matrix).getStub();
         rs.next();
         assertEquals("GPI", multi.convertField(rs), null);
     }
@@ -194,25 +168,25 @@ public class MultiFormattedDataFieldTest extends TestCase {
     /**
      * A unit test for JUnit
      *
-     * @exception Exception Description of the Exception
+     * @throws Exception Description of the Exception
      */
     public void test_convertField_number() throws Exception {
         Translator datafieldSlash =
-            DataShipmentHome.getNewTranslator(Types.NUMERIC, ".", null);
-        HashMap sourceTranslator = new HashMap();
+              DataShipmentHome.getNewTranslator(Types.NUMERIC, ".", null);
+        HashMap<String, Translator> sourceTranslator = new HashMap<String, Translator>();
         sourceTranslator.put("GPI", datafieldSlash);
 
         MultiFormattedDataField multi =
-            new MultiFormattedDataField("COL_SOURCE", "COL_DEST", "COL_SOURCE_SYSTEM",
-                sourceTranslator);
+              new MultiFormattedDataField("COL_SOURCE", "COL_DEST", "COL_SOURCE_SYSTEM",
+                                          sourceTranslator);
 
         assertEquals(multi.getDBDestFieldName(), "COL_DEST");
 
         Object[][] rsVal = {
-                {"COL_SOURCE", "COL_SOURCE_SYSTEM"},
-                {"1,200", "GPI"}
-            };
-        FakeResultSet rs = new FakeResultSet(rsVal);
+              {"COL_SOURCE", "COL_SOURCE_SYSTEM"},
+              {"1,200", "GPI"}
+        };
+        ResultSet rs = new FakeResultSet(rsVal).getStub();
         rs.next();
         try {
             multi.convertField(rs);
@@ -227,27 +201,27 @@ public class MultiFormattedDataFieldTest extends TestCase {
     /**
      * A unit test for JUnit
      *
-     * @exception Exception Description of the Exception
+     * @throws Exception Description of the Exception
      */
     public void test_convertField_sourceNotFound()
-            throws Exception {
+          throws Exception {
         Translator datafieldSlash =
-            DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
-        HashMap sourceTranslator = new HashMap();
+              DataShipmentHome.getNewTranslator(Types.DATE, null, "dd/MM/yy");
+        HashMap<String, Translator> sourceTranslator = new HashMap<String, Translator>();
         sourceTranslator.put("GPI", datafieldSlash);
 
         MultiFormattedDataField multi =
-            new MultiFormattedDataField("COL_A", "COL_A", "COL_SOURCE_SYSTEM",
-                sourceTranslator);
+              new MultiFormattedDataField("COL_A", "COL_A", "COL_SOURCE_SYSTEM",
+                                          sourceTranslator);
 
         Object[][] matrix =
-            {
-                {"COL_A", "COL_B", "COL_SOURCE_SYSTEM"},
-                {"10/10/66", null, "GPI"},
-                {"11/11/66", null, "FININF"}
-            };
+              {
+                    {"COL_A", "COL_B", "COL_SOURCE_SYSTEM"},
+                    {"10/10/66", null, "GPI"},
+                    {"11/11/66", null, "FININF"}
+              };
 
-        FakeResultSet rs = new FakeResultSet(matrix);
+        ResultSet rs = new FakeResultSet(matrix).getStub();
         rs.next();
         assertEquals("GPI", multi.convertField(rs), java.sql.Date.valueOf("1966-10-10"));
         rs.next();
